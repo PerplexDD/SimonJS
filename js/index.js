@@ -41,11 +41,10 @@ function nextSequence() {
   let ranChosenColor = buttonColors[ranNum];
   gamePattern.push(ranChosenColor);
 
-  $("#" + ranChosenColor).fadeIn(125).fadeOut(125).fadeIn(125);
-  playSound(ranChosenColor);
+  playbackGamePattern(gamePattern);
   level++;
   $("#level-title").text("Level " + level);
-  console.log(gamePattern);
+
 };
 
 
@@ -65,8 +64,6 @@ function animatePress(curColor){
 
 // Checks users answers against the computers pattern
 function checkAnswer(curLevel) {
-  console.log(userClickPattern[curLevel]);
-  console.log(gamePattern[curLevel]);
   if(userClickPattern[curLevel] === gamePattern[curLevel]) {
     if (userClickPattern.length === gamePattern.length) {
       setTimeout(function () {
@@ -90,3 +87,15 @@ function startOver() {
   level = 0;
   firstTime = true;
 };
+
+function playbackGamePattern (array) {
+  $.each(array, function(index, value) {
+    (function(index, value){
+      var wait = index * 500 + 500;
+      setTimeout(function(){
+        $("#" + value).fadeIn(125).fadeOut(125).fadeIn(125);
+        playSound(value);
+      }, wait);
+    })(index, value);
+  });
+}
